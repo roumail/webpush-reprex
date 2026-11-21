@@ -109,6 +109,9 @@ Test page: https://www.rohailtaimour.com/webpush-reprex/
    `ok` means Apple accepted it; the notification should show on the lock
    screen. `{error, gone}` means subscribe again on the phone.
 
+**Result 2026-11-21:** `ok` from Apple, and the notification showed on a
+locked iPhone (iOS 18.6.2) running the test page from the home screen.
+
 ## For Elixir later
 
 Everything here is OTP. In Elixir the same calls read `:crypto.mac(...)`,
