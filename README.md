@@ -31,15 +31,25 @@ the relay's identity.
 webpush-reprex/
 ├── README.md                 this file
 ├── run-tests.sh              runs the suite (local rebar3, else Docker)
+├── push.sh                   manual check: make keys, push to a real phone
 ├── rebar.config              no dependencies
 ├── src/
 │   ├── webpush.app.src
-│   └── webpush.erl           THE CODE UNDER TEST: what the relay will do
-└── test/
-    ├── webpush_SUITE.erl     THE SPEC: one test case per scenario
-    ├── browser.erl           plays the phone's browser
-    └── fake_push_service.erl plays Apple's / Google's push server
+│   ├── webpush.erl           THE CODE UNDER TEST: what the relay will do
+│   └── webpush_manual.erl    what push.sh runs
+├── test/                     AUTOMATED: no network, no phone
+│   ├── webpush_SUITE.erl     THE SPEC: one test case per scenario
+│   ├── browser.erl           plays the phone's browser
+│   └── fake_push_service.erl plays Apple's / Google's push server
+└── docs/                     MANUAL: the test page, served by GitHub Pages
+    ├── index.html, app.js    subscribes and shows the subscription JSON
+    ├── sw.js                 service worker: shows each push
+    ├── manifest.json         makes it installable to the home screen
+    └── config.js             the VAPID public key (made by push.sh keys)
 ```
+
+Never committed (`*.local.json`, gitignored): `vapid.local.json` (the VAPID
+private key) and `subscription.local.json` (the phone's subscription).
 
 | Module | Plays | Does |
 |---|---|---|
@@ -81,15 +91,23 @@ Common Test log.
   `docker run --rm -it -v "$PWD":/app -w /app erlang:27 rebar3 shell`), then
   `webpush:vapid_keys(<<"https://family.example">>).`
 
-## What the tests can't prove (manual step, not built yet)
+## Manual check on a real iPhone
 
-That Apple's real push service accepts our requests and an iPhone shows the
-notification. That needs a real phone:
+What the automated tests can't prove: that Apple's real push service accepts
+our requests and the phone shows the notification.
 
-1. a tiny web app on HTTPS (e.g. GitHub Pages) with a service worker,
-   installed to the iPhone's home screen, that prints its subscription JSON;
-2. `webpush:send/4` from `rebar3 shell` to that subscription;
-3. the notification shows on the locked iPhone.
+Test page: https://www.rohailtaimour.com/webpush-reprex/
+
+1. **Keys (once):** `./push.sh keys` writes `vapid.local.json` (private) and
+   `docs/config.js` (public). Commit and push `docs/config.js`.
+2. **Phone:** open the page in Safari → Share → Add to Home Screen → open it
+   from the home screen → *Turn on notifications* → allow → *Copy
+   subscription*.
+3. **Mac:** paste it into `subscription.local.json` (Universal Clipboard,
+   or AirDrop a note).
+4. **Send:** lock the phone, then `./push.sh send "Dad: dinner is ready"`.
+   `ok` means Apple accepted it; the notification should show on the lock
+   screen. `{error, gone}` means subscribe again on the phone.
 
 ## For Elixir later
 

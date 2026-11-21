@@ -1,1 +1,3 @@
 _build/
+# The VAPID private key and the phone's subscription: never published.
+*.local.json

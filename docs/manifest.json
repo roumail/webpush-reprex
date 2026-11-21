@@ -1,0 +1,9 @@
+{
+  "name": "Web Push check",
+  "short_name": "Push check",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Web Push check</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Push check">
+  <style>
+    :root { --bg: #ffffff; --fg: #1d1d1f; --muted: #6e6e73; --accent: #0a66d8; --field: #f2f2f7; color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #000000; --fg: #f5f5f7; --muted: #a1a1a6; --accent: #4c9bff; --field: #1c1c1e; } }
+    body { margin: 0; padding: max(16px, env(safe-area-inset-top)) 16px 32px; background: var(--bg); color: var(--fg);
+           font: 17px/1.45 -apple-system, system-ui, sans-serif; }
+    main { max-width: 36rem; margin: 0 auto; }
+    h1 { font-size: 1.6rem; margin: 0.5rem 0 1rem; }
+    dl { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 1rem; margin: 0 0 1.25rem; }
+    dt { color: var(--muted); }
+    dd { margin: 0; }
+    button { font: inherit; padding: 0.7rem 1.1rem; border: 0; border-radius: 10px; background: var(--accent); color: #fff; }
+    button:disabled { opacity: 0.4; }
+    textarea { box-sizing: border-box; width: 100%; height: 9rem; margin: 1rem 0 0.5rem; padding: 0.6rem;
+               border: 0; border-radius: 10px; background: var(--field); color: var(--fg); font: 13px/1.35 ui-monospace, monospace; }
+    .hint { color: var(--muted); font-size: 0.9rem; }
+    #error { color: #d70015; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Web Push check</h1>
+    <dl>
+      <dt>On home screen</dt><dd id="installed">…</dd>
+      <dt>Push supported</dt><dd id="supported">…</dd>
+      <dt>Permission</dt><dd id="permission">…</dd>
+    </dl>
+    <button id="enable" type="button">Turn on notifications</button>
+    <textarea id="subscription" readonly placeholder="The subscription appears here."></textarea>
+    <button id="copy" type="button" disabled>Copy subscription</button>
+    <p class="hint">On iPhone: Share → Add to Home Screen, open it from the home screen,
+      turn on notifications, copy the subscription to the Mac
+      (<code>subscription.local.json</code>), then run <code>./push.sh send "hi"</code>.</p>
+    <p id="error" role="alert"></p>
+  </main>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
