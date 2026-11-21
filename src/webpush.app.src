@@ -1,0 +1,7 @@
+{application, webpush, [
+    {description, "Reprex: send a Web Push message (RFC 8030, 8291, 8292)"},
+    {vsn, "0.1.0"},
+    {registered, []},
+    {applications, [kernel, stdlib, crypto, public_key, ssl, inets]},
+    {env, []}
+]}.
