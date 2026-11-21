@@ -110,7 +110,7 @@ Test page: https://www.rohailtaimour.com/webpush-reprex/
    screen. `{error, gone}` means subscribe again on the phone.
 
 **Result 2026-11-21:** `ok` from Apple, and the notification showed on a
-locked iPhone (iOS 18.6.2) running the test page from the home screen.
+locked iPhone 14 Pro (iOS 18.6.2) running the test page from the home screen.
 
 ## For Elixir later
 
